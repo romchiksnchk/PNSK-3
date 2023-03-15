@@ -80,31 +80,25 @@ Vue.component('fill', {
     `,
     data() {
         return {
-            name: null,
-            point_1: null,
-            point_2: null,
-            point_3: null,
-            point_4: null,
-            point_5: null,
-            date: null,
+           title:null,
+           descprition: null,
+           dateD: null,
+           show : false
         }
     },
     methods: {
 
         Submit() {
             let card = {
-                name: this.name,
-                points: [
-                    {name: this.point_1, completed: false},
-                    {name: this.point_2, completed: false},
-                    {name: this.point_3, completed: false},
-                    {name: this.point_4, completed: false},
-                    {name: this.point_5, completed: false}
-                ],
-                date: null,
-                // date: null,
-                status: 0,
-                errors: [],
+               title: this.title,
+               descprition: this.descprition,
+                date: this.dateD,//deadline
+                dateC: new Date().toLocaleString,//Дата создания
+                updateCard: false,
+                reason:[],
+                dateL:null,
+                dateE: null,
+                inTime:true, //проверка на попадание в срок
             }
             eventBus.$emit('addColumn_1', card)
             this.name = null;
