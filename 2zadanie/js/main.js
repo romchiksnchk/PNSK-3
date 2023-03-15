@@ -72,11 +72,11 @@ Vue.component('fill', {    //дата создания, заголовок, оп
                     </p>
                     <p class="pForm">Добавьте описание задаче:</p>
                     <textarea v-model="description" cols="40" rows="4"></textarea>
-                    <p class="pForm">Укажите дату дедлайна: 
+                    <p class="pForm">Укажите срок выполнения задачи: 
                         <input required type="date" v-model="dateD">
                     </p>
                     <p class="pForm">
-                        <input class="button" type="submit" value="Добвить задачу">
+                        <input class="button" type="submit" value="Добавить задачу">
                     </p>
                 </form>
             </div>
@@ -151,7 +151,7 @@ Vue.component('column1', {
                         <p>Добавьте описание задаче: 
                             <textarea v-model="card.description" cols="20" rows="5"></textarea>
                         </p>
-                        <p>Укажите дату дедлайна: 
+                        <p>Укажите дату окончания срока: 
                             <input type="date" v-model="card.dateD">
                         </p>
                         <p>

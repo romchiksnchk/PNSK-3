@@ -50,3 +50,15 @@ li{
     margin-top: 15px;
     margin-bottom: -40px;
 }
+.modal-close{
+    color: #fff;
+    background: #0e0e0e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    width: 30px;
+    height: 30px;
+}
