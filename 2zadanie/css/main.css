@@ -9,6 +9,45 @@ textarea{
     border: #000000 solid 2px;
 }
 body{
-    background-color:#B5C6B8;
+    background-color:#05ab87;
     font-family: FreeMono, monospace;
+}
+#columns{
+    display: flex;
+}
+.title{
+    margin-bottom: 25px;
+}
+.card{
+    margin-bottom: 30px;
+    margin-top: 25px;
+    background-color: #ffffff ;
+    border: #48523D solid 2px;
+    padding: 18px;
+}
+#columns{
+    display: flex;
+}
+ul{
+    padding: 0;
+    margin-bottom: 0px;
+}
+li{
+    list-style-type: none;
+    margin: 10px;
+}
+#form {
+    margin: 50px 0;
+    display: block;
+    text-align: center;
+    margin-bottom: 70px;
+    border: 2px;
+}
+.button{
+    padding: 9px 20px;
+    border-radius: 7px;
+    border: none;
+    background-color: #8FA2CA;
+    margin-top: 15px;
+    margin-bottom: -40px;
 }

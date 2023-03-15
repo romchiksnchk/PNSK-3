@@ -1,7 +1,7 @@
 let eventBus = new Vue()
 
 Vue.component('cards-kanban', {
-    template: `
+    template:`
     <div>
         <fill></fill>
         <div id="columns">
@@ -14,12 +14,15 @@ Vue.component('cards-kanban', {
     `,
     data() {
         return {
-            column_1: [],
-            column_2: [],
-            column_3: [],
-            column_3: [],
-            ShowCard:true,
+            column1:[],
+            column2:[],
+            column3:[],
+            column4:[],
+            showCard: true,
         }
+    },
+    methods:{
+
     },
     mounted() {
         eventBus.$on('card-create', card => {
@@ -34,11 +37,13 @@ Vue.component('cards-kanban', {
             this.column3.push(card)
             this.column2.splice(this.column2.indexOf(card), 1)
         })
+
         eventBus.$on('moving3-2', card => {
             this.column2.push(card)
             this.column3.splice(this.column3.indexOf(card), 1)
             card.dateE = new Date().toLocaleDateString()
         })
+
         eventBus.$on('moving3-4', card => {
             this.column4.push(card)
             this.column3.splice(this.column3.indexOf(card), 1)
@@ -52,53 +57,52 @@ Vue.component('cards-kanban', {
     }
 })
 
-Vue.component('fill', {
-    template: `
+Vue.component('fill', {    //дата создания, заголовок, описание задачи, дедлайн
+    template:`
     <div>
     <div>
-        <button v-if="!show" @click="openModal">Добавить задачу</button>
+        <button v-if="!show" @click="openModal">Добавьте задачу</button>
         <div id="form" v-if="show" class="modal-shadow">
             <div class="modal">
-            <div class="modal-close" @click="closeModal">&#10006;</div>
+                <div class="modal-close" @click="closeModal">&#10006;</div>
                 <h3>Заполните карточку задачи</h3>
                 <form @submit.prevent="onSubmit">
                     <p class="pForm">Введите заголовок: 
                         <input required type="text" v-model="title" maxlength="30" placeholder="Заголовок">
                     </p>
-                    <p class="pForm">Добавьте описание для задачи:</p>
+                    <p class="pForm">Добавьте описание задаче:</p>
                     <textarea v-model="description" cols="40" rows="4"></textarea>
-                    <p class="pForm">Укажите дату окончания: 
+                    <p class="pForm">Укажите дату дедлайна: 
                         <input required type="date" v-model="dateD">
                     </p>
                     <p class="pForm">
-                        <input class="button" type="submit" value="Добавить задачу">
+                        <input class="button" type="submit" value="Добвить задачу">
                     </p>
                 </form>
             </div>
         </div>    
     </div>
     `,
-    data() {
+    data(){
         return {
-           title:null,
-           descprition: null,
-           dateD: null,
-           show : false
+            title: null,
+            description: null,
+            dateD: null,
+            show: false
         }
     },
     methods: {
-
-        Submit() {
+        onSubmit() {
             let card = {
-               title: this.title,
-               descprition: this.descprition,
-                date: this.dateD,//deadline
-                dateC: new Date().toLocaleString,//Дата создания
+                title: this.title,
+                description: this.description,
+                dateD: this.dateD,                  //дата дедлайна
+                dateC: new Date().toLocaleString(),   //дата создания
                 updateCard: false,
-                reason:[],
-                dateL:null, // DateLAST дата последнего изменения
-                dateE: null, //DataEND дата выполнения задачи
-                inTime:true, //Проверка на попадание в срок
+                dateL: null,                            //дата последних изменений
+                dateE: null,                            //дата выполнения
+                inTime: true,                            //в срок или нет
+                reason: []
             }
             eventBus.$emit('card-create', card)
             this.title = null
@@ -114,44 +118,10 @@ Vue.component('fill', {
             this.show = true
         }
     }
-
 })
 
-Vue.component('column_1', {
-    template: `
-    <div class="column">
-    <h3>Запланированные задачи</h3>
-    <div class="card" v-for="card in column1">
-        <ul>
-            <li class="title"><b>Заголовок:</b> {{ card.title }}</li>
-            <li><b>Описание задачи:</b> {{ card.description }}</li>
-            <li><b>Дата дедлайна:</b> {{ card.dateD }}</li>
-            <li><b>Дата создания:</b> {{ card.dateC }}</li>
-            <li v-if="card.dateL"><b>Дата последних изменений</b>{{ card.dateL }}</li>
-            <button @click="deleteCard(card)">Удалить</button>
-            <button @click="updateC(card)">Изменить</button>
-            <div class="change" v-if="card.updateCard">
-                <form @submit.prevent="updateTask(card)">
-                    <p>Введите заголовок: 
-                        <input type="text" v-model="card.title" maxlength="30" placeholder="Заголовок">
-                    </p>
-                    <p>Добавьте описание задаче: 
-                        <textarea v-model="card.description" cols="20" rows="5"></textarea>
-                    </p>
-                    <p>Укажите дату дедлайна: 
-                        <input type="date" v-model="card.dateD">
-                    </p>
-                    <p>
-                         <input class="button" type="submit" value="Изменить карточку">
-                    </p>
-                </form>
-            </div>
-         </ul>
-        <button @click="moving(card)">--></button>
-    </div>
-</div>
-    `,
-    props:{ 
+Vue.component('column1', {  //создание, удаление, редактирование карточки, время последнего редактирования
+    props:{                 // перемещение карточки во второй столбец
         card: {
             type: Object,
             required: true
@@ -161,6 +131,39 @@ Vue.component('column_1', {
             required: true
         },
     },
+    template:`
+    <div class="column">
+        <h3>Запланированные задачи</h3>
+        <div class="card" v-for="card in column1">
+            <ul>
+                <li class="title"><b>Заголовок:</b> {{ card.title }}</li>
+                <li><b>Описание задачи:</b> {{ card.description }}</li>
+                <li><b>Дата дедлайна:</b> {{ card.dateD }}</li>
+                <li><b>Дата создания:</b> {{ card.dateC }}</li>
+                <li v-if="card.dateL"><b>Дата последних изменений</b>{{ card.dateL }}</li>
+                <button @click="deleteCard(card)">Удалить</button>
+                <button @click="updateC(card)">Изменить</button>
+                <div class="change" v-if="card.updateCard">
+                    <form @submit.prevent="updateTask(card)">
+                        <p>Введите заголовок: 
+                            <input type="text" v-model="card.title" maxlength="30" placeholder="Заголовок">
+                        </p>
+                        <p>Добавьте описание задаче: 
+                            <textarea v-model="card.description" cols="20" rows="5"></textarea>
+                        </p>
+                        <p>Укажите дату дедлайна: 
+                            <input type="date" v-model="card.dateD">
+                        </p>
+                        <p>
+                             <input class="button" type="submit" value="Изменить карточку">
+                        </p>
+                    </form>
+                </div>
+             </ul>
+            <button @click="moving(card)">--></button>
+        </div>
+    </div>
+    `,
     methods: {
         deleteCard(card){
             this.column1.splice(this.column1.indexOf(card), 1)
@@ -334,8 +337,9 @@ Vue.component('column3', {  //редактирование, время посл�
         }
     },
 })
-Vue.component('column4', {  
-    props:{                 
+
+Vue.component('column4', {  //проверка срока дедлайна: срок не выполнен - просроченная,
+    props:{                 //срок выполнен - выполненная в срок
         column4:{
             type: Array,
             required: true,
@@ -367,5 +371,8 @@ Vue.component('column4', {
 })
 
 let app = new Vue({
-    el: '#app',
+    el:'#app',
+    data:{
+
+    }
 })
