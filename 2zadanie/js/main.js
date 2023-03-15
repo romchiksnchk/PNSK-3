@@ -35,21 +35,20 @@ Vue.component('cards-kanban', {
             this.column2.splice(this.column2.indexOf(card), 1)
         })
         eventBus.$on('moving3-2', card => {
-            if (this.column_2.push(card)) {
-                this.errors.length = 0
-                this.column_2.push(ColumnCard)
-                this.column_1.splice(this.column_1.indexOf(ColumnCard), 1)
-            } else {
-                this.errors.length = 0
-                this.errors.push('Вы не можете редактировать первую колонку, пока во второй есть 5 карточек.')
+            this.column2.push(card)
+            this.column3.splice(this.column3.indexOf(card), 1)
+            card.dateE = new Date().toLocaleDateString()
+        })
+        eventBus.$on('moving3-4', card => {
+            this.column4.push(card)
+            this.column3.splice(this.column3.indexOf(card), 1)
+            card.dateE = new Date().toLocaleDateString()
+            card.dateE = card.dateE.split('.').reverse().join('-')
+            console.log(card)
+            if (card.dateE > card.dateD){
+                card.inTime = false
             }
         })
-        eventBus.$on('addColumn_3', ColumnCard => {
-            this.column_3.push(ColumnCard)
-            this.column_2.splice(this.column_2.indexOf(ColumnCard), 1)
-
-        })
-
     }
 })
 
