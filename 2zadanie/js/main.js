@@ -1,37 +1,41 @@
 let eventBus = new Vue()
 
-Vue.component('column', {
-    // колонки
+Vue.component('cards-kanban', {
     template: `
-        <div class="columns">
-            <newCard></newCard>
-        <p class="error" v-for="error in errors">{{ error }}</p>
-                <column_1 :column_1="column_1"></column_1>
-                <column_2 :column_2="column_2"></column_2>
-                <column_3 :column_3="column_3"></column_3>
-            </div>
+    <div>
+        <fill></fill>
+        <div id="columns">
+            <column1 :column1="column1"></column1>
+            <column2 :column2="column2"></column2>
+            <column3 :column3="column3"></column3>
+            <column4 :column4="column4"></column4>
+        </div>
+    </div>
     `,
     data() {
         return {
             column_1: [],
             column_2: [],
             column_3: [],
-            errors: [],
+            column_3: [],
+            ShowCard:true,
         }
     },
     mounted() {
-        eventBus.$on('addColumn_1', ColumnCard => {
-
-            if (this.column_1.length < 3) {
-                this.errors.length = 0
-                this.column_1.push(ColumnCard)
-            } else {
-                this.errors.length = 0
-                this.errors.push('макс коллво заметок в 1 столбце')
-            }
+        eventBus.$on('card-create', card => {
+            this.column1.push(card)
         })
-        eventBus.$on('addColumn_2', ColumnCard => {
-            if (this.column_2.length < 5) {
+        eventBus.$on('moving1', card => {
+            this.column2.push(card)
+            this.column1.splice(this.column1.indexOf(card), 1)
+
+        })
+        eventBus.$on('moving2', card => {
+            this.column3.push(card)
+            this.column2.splice(this.column2.indexOf(card), 1)
+        })
+        eventBus.$on('moving3-2', card => {
+            if (this.column_2.push(card)) {
                 this.errors.length = 0
                 this.column_2.push(ColumnCard)
                 this.column_1.splice(this.column_1.indexOf(ColumnCard), 1)
