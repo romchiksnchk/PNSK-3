@@ -151,89 +151,141 @@ Vue.component('column_1', {
     </div>
 </div>
     `,
-    props: {
-        column_1: {
-            type: Array,
-        },
-        column_2: {
-            type: Array,
-        },
+    props:{ 
         card: {
             type: Object,
+            required: true
         },
-        errors: {
+        column1: {
             type: Array,
+            required: true
         },
     },
     methods: {
-        TaskCompleted(ColumnCard, task) {
-            task.completed = true
-            ColumnCard.status += 1
-            console.log("Проверочка" + ColumnCard.status)
-            if (ColumnCard.status === 3 && !this.point_5 && !this.point_4) {
-                console.log("1" + ColumnCard.status)
-                eventBus.$emit('addColumn_2', ColumnCard)
-            }
+        deleteCard(card){
+            this.column1.splice(this.column1.indexOf(card), 1)
         },
+        updateC(card){
+            card.updateCard = true
+            console.log(card.updateCard)
+        },
+        updateTask(card){
+            this.column1.push(card)
+            this.column1.splice(this.column1.indexOf(card), 1)
+            card.dateL = new Date().toLocaleString()
+            return card.updateCard = false
+        },
+        moving(card){
+            eventBus.$emit('moving1', card)
+        }
     },
 })
 
-Vue.component('column_2', {
-    template: `
-        <section id="main" class="main-alt">
-            <div class="column column_two">
-                <div class="card" v-for="card in column_2">
-                <h3>{{ card.name }}</h3>
-                    <div class="tasks" v-for="task in card.points"
-                        v-if="task.name != null"
-                        @click="TaskCompleted(card, task)"
-                        :class="{completed: task.completed}">
-                        {{ task.name }}
-                    </div>
-                </div>
-            </div>
-        </section>
-    `,
-    props: {
-        column_2: {
+Vue.component('column2', {  //редактирование, время последнего редактирования, перемещение в третий столб
+    props:{
+        column2:{
             type: Array,
+            required: true
         },
-        card: {
-            type: Object,
+        card:{
+            type:Object,
+            required: true
         },
-    },
-    methods: {
-        TaskCompleted(ColumnCard, task) {
-            task.completed = true
-            ColumnCard.status += 1
-            let count = 0
-            for(let i = 0; i < 5; i++){
-                count++
-            }
-            if (( ColumnCard.status / count) * 100 >= 100) {
-                eventBus.$emit('addColumn_3', ColumnCard)
-                ColumnCard.date = new Date().toLocaleString()
-            }
+        reason:{
+            type:Array,
+            required: true
         }
-    }
+    },
+    template:`
+    <div class="column">
+        <h3>Задачи в работе</h3>
+         <div class="card" v-for="card in column2">
+            <ul>
+                 <li class="title"><b>Заголовок:</b> {{ card.title }}</li>
+                <li><b>Описание задачи:</b> {{ card.description }}</li>
+                <li><b>Дата дедлайна:</b> {{ card.dateD }}</li>
+                <li><b>Дата создания:</b> {{ card.dateC }}</li>
+                <li v-if="card.dateL"><b>Дата последних изменений</b>{{ card.dateL }}</li>
+                <li v-if="card.reason.length"><b>Комментарии: </b><li v-for="r in card.reason">{{ r }}</li></li>
+                <button @click="updateC(card)">Изменить</button>
+                 <div class="change" v-if="card.updateCard">
+                    <form @submit.prevent="updateTask(card)">
+                        <p>Введите заголовок: 
+                            <input type="text" v-model="card.title" maxlength="30" placeholder="Заголовок">
+                        </p>
+                        <p>Добавьте описание задаче: 
+                            <textarea v-model="card.description" cols="20" rows="5"></textarea>
+                        </p>
+                        <p>Укажите дату дедлайна: 
+                            <input type="date" v-model="card.dateD">
+                        </p>
+                        <p>
+                            <input class="button" type="submit" value="Изменить карточку">
+                        </p>
+                    </form>
+                </div>
+            </ul>
+             <button @click="moving(card)">--></button>
+        </div>        
+    </div>
+    `,
+    methods: {
+        updateC(card){
+            card.updateCard = true
+            console.log(card.updateCard)
+        },
+        updateTask(card){
+            this.column2.push(card)
+            this.column2.splice(this.column2.indexOf(card), 1)
+            card.dateL = new Date().toLocaleString()
+            return card.updateCard = false
+        },
+        moving(card){
+            eventBus.$emit('moving2', card)
+        }
+    },
 })
 
 Vue.component('column_3', {
     template: `
-        <section id="main" class="main-alt">
-            <div class="column column_three">
-                <div class="card" v-for="card in column_3">
-                <h3>{{ card.name }}</h3>
-                    <div class="tasks" v-for="task in card.points"
-                        v-if="task.name != null"
-                        @click="TaskCompleted(card, task)"
-                        :class="{completed: task.completed}">
-                        {{ task.name }}
-                    </div>
-                        <p>Выполнено {{ card.date }}</p>
-                </div>
+    <div class="column">
+    <h3>Тестирование</h3>
+    <div class="card" v-for="card in column3">
+        <ul>
+            <li class="title"><b>Заголовок:</b> {{ card.title }}</li>
+            <li><b>Описание задачи:</b> {{ card.description }}</li>
+            <li><b>Дата дедлайна:</b> {{ card.dateD }}</li>
+            <li><b>Дата создания:</b> {{ card.dateC }}</li>
+            <li v-if="card.dateL"><b>Дата последних изменений: </b>{{ card.dateL }}</li>
+            <li v-if="card.reason.length"><b>Комментарии: </b><li v-for="r in card.reason">{{ r }}</li></li>
+            <li v-if="moveBack">
+                <form @submit.prevent="onSubmit(card)">
+                    <textarea v-model="reason2" cols="20" rows="4"></textarea>
+                    <input class="button" type="submit" value="Сохранить">
+                </form>
+            </li>
+            <button @click="updateC(card)">Изменить</button>
+             <div class="change" v-if="card.updateCard">
+                <form @submit.prevent="updateTask(card)">
+                    <p>Введите заголовок: 
+                        <input type="text" v-model="card.title" maxlength="30" placeholder="Заголовок">
+                    </p>
+                    <p>Добавьте описание задаче: 
+                        <textarea v-model="card.description" cols="20" rows="5"></textarea>
+                    </p>
+                    <p>Укажите дату дедлайна: 
+                        <input type="date" v-model="card.dateD">
+                    </p>
+                    <p>
+                          <input class="button" type="submit" value="Изменить карточку">
+                    </p>
+                </form>
             </div>
-        </section>
+        </ul>
+        <button @click="movingBack"><--</button>
+        <button @click="moving(card)">--></button>
+    </div>    
+</div>
     `,
     props: {
         column_3: {
