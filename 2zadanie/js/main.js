@@ -96,12 +96,12 @@ Vue.component('fill', {    //дата создания, заголовок, оп
             let card = {
                 title: this.title,
                 description: this.description,
-                dateD: this.dateD,                  //дата дедлайна
-                dateC: new Date().toLocaleString(),   //дата создания
+                dateD: this.dateD,                  //DateDEADLINE
+                dateC: new Date().toLocaleString(),   //DataCreate
                 updateCard: false,
-                dateL: null,                            //дата последних изменений
-                dateE: null,                            //дата выполнения
-                inTime: true,                            //в срок или нет
+                dateL: null,                            //DateLAST
+                dateE: null,                            //DataEND
+                inTime: true,                            //IN TIME
                 reason: []
             }
             eventBus.$emit('card-create', card)
@@ -120,8 +120,8 @@ Vue.component('fill', {    //дата создания, заголовок, оп
     }
 })
 
-Vue.component('column1', {  //создание, удаление, редактирование карточки, время последнего редактирования
-    props:{                 // перемещение карточки во второй столбец
+Vue.component('column1', {  
+    props:{                 
         card: {
             type: Object,
             required: true
@@ -184,7 +184,7 @@ Vue.component('column1', {  //создание, удаление, редакти
     },
 })
 
-Vue.component('column2', {  //редактирование, время последнего редактирования, перемещение в третий столб
+Vue.component('column2', {  
     props:{
         column2:{
             type: Array,
@@ -249,8 +249,8 @@ Vue.component('column2', {  //редактирование, время посл�
     },
 })
 
-Vue.component('column3', {  //редактирование, время последнего редактирования
-    props:{                 //перемещение в 4 столб, перемещение во 2 столб + причина возврата
+Vue.component('column3', { 
+    props:{                
         column3:{
             type: Array,
             required: true
@@ -338,8 +338,8 @@ Vue.component('column3', {  //редактирование, время посл�
     },
 })
 
-Vue.component('column4', {  //проверка срока дедлайна: срок не выполнен - просроченная,
-    props:{                 //срок выполнен - выполненная в срок
+Vue.component('column4', {  
+    props:{                
         column4:{
             type: Array,
             required: true,
