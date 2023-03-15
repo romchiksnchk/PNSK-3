@@ -119,19 +119,37 @@ Vue.component('fill', {
 
 Vue.component('column_1', {
     template: `
-        <section id="main" class="main-alt">
-            <div class="column column_one">
-                <div class="card" v-for="card in column_1">
-                <h3>{{ card.name }}</h3>
-                    <div class="tasks" v-for="task in card.points"
-                        v-if="task.name != null"
-                        @click="TaskCompleted(card, task)"
-                        :class="{completed: task.completed}">
-                        {{ task.name }}
-                    </div>
-                </div>
+    <div class="column">
+    <h3>Запланированные задачи</h3>
+    <div class="card" v-for="card in column1">
+        <ul>
+            <li class="title"><b>Заголовок:</b> {{ card.title }}</li>
+            <li><b>Описание задачи:</b> {{ card.description }}</li>
+            <li><b>Дата дедлайна:</b> {{ card.dateD }}</li>
+            <li><b>Дата создания:</b> {{ card.dateC }}</li>
+            <li v-if="card.dateL"><b>Дата последних изменений</b>{{ card.dateL }}</li>
+            <button @click="deleteCard(card)">Удалить</button>
+            <button @click="updateC(card)">Изменить</button>
+            <div class="change" v-if="card.updateCard">
+                <form @submit.prevent="updateTask(card)">
+                    <p>Введите заголовок: 
+                        <input type="text" v-model="card.title" maxlength="30" placeholder="Заголовок">
+                    </p>
+                    <p>Добавьте описание задаче: 
+                        <textarea v-model="card.description" cols="20" rows="5"></textarea>
+                    </p>
+                    <p>Укажите дату дедлайна: 
+                        <input type="date" v-model="card.dateD">
+                    </p>
+                    <p>
+                         <input class="button" type="submit" value="Изменить карточку">
+                    </p>
+                </form>
             </div>
-        </section>
+         </ul>
+        <button @click="moving(card)">--></button>
+    </div>
+</div>
     `,
     props: {
         column_1: {
