@@ -57,7 +57,7 @@ Vue.component('cards-kanban', {
     }
 })
 
-Vue.component('fill', {    //дата создания, заголовок, описание задачи, дедлайн
+Vue.component('fill', {   
     template:`
     <div>
     <div>
@@ -300,8 +300,8 @@ Vue.component('column3', {
                     </form>
                 </div>
             </ul>
-            <button @click="movingBack"><--</button>
-            <button @click="moving(card)">--></button>
+            <button @click="movingBack">Сдвиг влево</button>
+            <button @click="moving(card)">Сдвиг вправо</button>
         </div>    
     </div>
     `,

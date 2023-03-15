@@ -2,31 +2,37 @@
     font-weight: 500;
 }
 
+
 textarea{
     resize: none;
     border: none;
     padding: 8px 41px;
     border: #000000 solid 2px;
 }
+
 body{
-    background-color:#05ab87;
+    background-color:#B5C6B8;
     font-family: FreeMono, monospace;
-}
-#columns{
-    display: flex;
-}
-.title{
-    margin-bottom: 25px;
 }
 .card{
     margin-bottom: 30px;
     margin-top: 25px;
-    background-color: #ffffff ;
-    border: #48523D solid 2px;
+    background-color: #EDF2F7 ;
+    border: #000000 solid 2px;
     padding: 18px;
+
 }
 #columns{
     display: flex;
+}
+.column{
+    width: 25%;
+    text-align: center;
+    padding: 0 20px;
+}
+.change{
+    border-top: rgb(0, 0, 0) 2px dotted;
+    margin-top: 20px;
 }
 ul{
     padding: 0;
@@ -36,23 +42,80 @@ li{
     list-style-type: none;
     margin: 10px;
 }
+button{
+    padding: 9px 20px;
+    border: none;
+    background-color: #ffffff;
+    margin-top: 15px;
+}
+button:hover{
+    background-color: #000000;
+    cursor: pointer;
+    transition: 0.5s;
+    color: #ffffff;
+}
+#inTime{
+    color: rgb(255, 255, 255);
+    text-decoration: underline;
+}
+#notInTime {
+    color: firebrick;
+    text-decoration: underline;
+}
+.title{
+    margin-bottom: 25px;
+}
 #form {
     margin: 50px 0;
     display: block;
     text-align: center;
     margin-bottom: 70px;
-    border: 2px;
 }
 .button{
     padding: 9px 20px;
     border: none;
-    background-color: #ffffff;
+    background-color: #434343;
     margin-top: 15px;
     margin-bottom: -40px;
 }
+
+input{
+    border: none;
+    border: #48523D solid 2px;
+    width: 200px;
+    padding: 10px 12px;
+}
+
+.pForm{
+    margin-top: 35px;
+}
+
+/*модальное окно*/
+.modal-shadow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.39);
+    margin-top: -70px;
+}
+
+.modal {
+    background: #ffffff;
+    padding: 15px;
+    min-width: 420px;
+    max-width: 480px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .modal-close{
-    color: #fff;
-    background: #0e0e0e;
+    border-radius: 32%;
+    color: #000000;
+    background: #e0e0e0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -61,4 +124,12 @@ li{
     right: 7px;
     width: 30px;
     height: 30px;
+    cursor: pointer;
+}
+.card{
+    background-color: #0e0e0e;
+    color: #EDF2F7;
+}
+h3{
+   color: #000000;
 }
