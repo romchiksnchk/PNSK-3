@@ -96,17 +96,22 @@ Vue.component('fill', {
                 dateC: new Date().toLocaleString,//Дата создания
                 updateCard: false,
                 reason:[],
-                dateL:null,
-                dateE: null,
-                inTime:true, //проверка на попадание в срок
+                dateL:null, // DateLAST дата последнего изменения
+                dateE: null, //DataEND дата выполнения задачи
+                inTime:true, //Проверка на попадание в срок
             }
-            eventBus.$emit('addColumn_1', card)
-            this.name = null;
-            this.point_1 = null
-            this.point_2 = null
-            this.point_3 = null
-            this.point_4 = null
-            this.point_5 = null
+            eventBus.$emit('card-create', card)
+            this.title = null
+            this.description = null
+            this.dateD = null
+            this.closeModal()
+            console.log(card)
+        },
+        closeModal(){
+            this.show = false
+        },
+        openModal(){
+            this.show = true
         }
     }
 
