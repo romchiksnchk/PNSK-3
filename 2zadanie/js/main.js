@@ -52,32 +52,31 @@ Vue.component('cards-kanban', {
     }
 })
 
-Vue.component('newCard', {
+Vue.component('fill', {
     template: `
-    <section id="main" class="main-alt">
-    
-        <form class="row" @submit.prevent="Submit">
-        
-            <p class="main_text">Заметки</p>
-        <div class="form_control">
-                
-            <div class="form_name">
-                <input required type="text" v-model="name" id="name" placeholder="Введите название заметки"/>
+    <div>
+    <div>
+        <button v-if="!show" @click="openModal">Добавить задачу</button>
+        <div id="form" v-if="show" class="modal-shadow">
+            <div class="modal">
+            <div class="modal-close" @click="closeModal">&#10006;</div>
+                <h3>Заполните карточку задачи</h3>
+                <form @submit.prevent="onSubmit">
+                    <p class="pForm">Введите заголовок: 
+                        <input required type="text" v-model="title" maxlength="30" placeholder="Заголовок">
+                    </p>
+                    <p class="pForm">Добавьте описание для задачи:</p>
+                    <textarea v-model="description" cols="40" rows="4"></textarea>
+                    <p class="pForm">Укажите дату окончания: 
+                        <input required type="date" v-model="dateD">
+                    </p>
+                    <p class="pForm">
+                        <input class="button" type="submit" value="Добавить задачу">
+                    </p>
+                </form>
             </div>
-            
-            <input required type="text"  v-model="point_1" placeholder="Первый пункт"/>
-            <input required type="text"  v-model="point_2" placeholder="Второй пункт"/>
-            <input required type="text"  v-model="point_3" placeholder="Третий пункт"/> 
-            <input required type="text"  v-model="point_4"  placeholder="Четвертый пункт"/>
-             <input required type="text" v-model="point_5"  placeholder="Пятый пункт"/>
-        </div>
-        <div>                    
-                <p class="sub">
-                        <input type="submit" value="Отправить"> 
-                </p>
-            </div>
-        </form>
-    </section>
+        </div>    
+    </div>
     `,
     data() {
         return {
